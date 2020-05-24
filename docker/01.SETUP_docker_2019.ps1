@@ -33,6 +33,7 @@ docker run `
 
 #Copy a backup file into the /var/backups folder on the Container.  
 docker cp C:\Docker\SQL\Backup\SeniorDebt.bak DEVSQL19:/var/backups
+docker cp C:\Docker\SQL\Backup\CoInvestApp.bak DEVSQL19:/var/backups
 
 #Next open SSMS, or Azure Data Studio to restore the backup (or use the GUI)
 #You will need to look for the file in the /var/backups folder.
@@ -43,6 +44,12 @@ MOVE N'SeniorDebt' TO N'/var/opt/mssql/data/SeniorDebt.mdf',
 MOVE N'SeniorDebt_log' TO N'/var/opt/mssql/data/SeniorDebt_log.ldf',  
 NOUNLOAD,  STATS = 5
 
+USE [master]
+RESTORE DATABASE [SeniorDebt] FROM  DISK = N'/var/backups/CoInvestApp.bak' 
+WITH  FILE = 1,  
+MOVE N'CoInvestApp' TO N'/var/opt/mssql/data/CoInvestApp.mdf',  
+MOVE N'CoInvestApp_log' TO N'/var/opt/mssql/data/CoInvestApp_log.ldf',  
+NOUNLOAD,  STATS = 5
 
 #These are commands to manage the container.
 # docker rm DEVSQL19 -f
